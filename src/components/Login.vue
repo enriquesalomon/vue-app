@@ -4,9 +4,10 @@
             <div class="col">
                 <h1 class="mt-5">Login</h1>
                 <hr>
-                <form method="post" action="/login" class="needs-validation" novalidate>
+                <form-tag @myevent="submitHandler">
 
                     <text-input
+                        v-model="email"
                         label="Email"
                         type="email"
                         name="email"
@@ -14,6 +15,7 @@
                     </text-input>
 
                     <text-input
+                        v-model="password"
                         label="Password"
                         type="password"
                         name="password"
@@ -22,19 +24,32 @@
 
                     <hr>
                     <input type="submit" class="btn btn-primary" value="Login">
-                </form>
+                </form-tag>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import FormTag from './forms/FormTag.vue'
 import TextInput from './forms/TextInput.vue'
 
 export default {
     name: 'login',
     components: {
+        FormTag,
         TextInput,
+    },
+    data() {
+        return {
+            email: "",
+            password: "",
+        }
+    },
+    methods: {
+        submitHandler() {
+            console.log("submitHandler called - success!");
+        }
     },
     mounted() {
         (function () {
