@@ -22,6 +22,10 @@
                         required="true">
                     </text-input>
 
+                    <hr />
+
+                    Email: {{email}}
+
                     <hr>
                     <input type="submit" class="btn btn-primary" value="Login">
                 </form-tag>
@@ -66,7 +70,7 @@ export default {
                 if (data.error) {
                     console.log("Error:", data.message);
                 } else {
-                    console.log(data);
+                    console.log("Token:", data.data.token.token);
                 }
             })
         }
