@@ -11,7 +11,8 @@
                     <tr>
                         <th>User</th>
                         <th>Email</th>
-                        <th>Stauts</th>
+                        <th>Active</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,6 +21,14 @@
                             <router-link :to="`/admin/users/${u.id}`">{{u.last_name}}, {{u.first_name}}</router-link>
                         </td>
                         <td>{{u.email}}</td>
+
+                        <td v-if="u.active === 1">
+                            <span class="badge bg-success">Active</span>
+                        </td>
+                        <td v-else>
+                            <span class="badge bg-danger">Inactive</span>
+                        </td>
+
                         <td v-if="u.token.id > 0">
                             <span class="badge bg-success" @click="logUserOut(u.id)">Logged in</span>
                         </td>

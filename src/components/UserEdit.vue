@@ -4,7 +4,7 @@
             <div class="col">
                 <h1 class="mt-3">User</h1>
                 <hr>
-                <form-tag @userEditEvent="submitHandler" name="userform" event="userEditEvent">
+                <form-tag v-if="this.ready" @userEditEvent="submitHandler" name="userform" event="userEditEvent">
 
                     <text-input
                         v-model="user.first_name"
@@ -48,6 +48,19 @@
                         :value="user.password"
                         name="password"></text-input>
 
+                    <div class="form-check">
+                        <input v-model="user.active" class="form-check-input" type="radio" id="user-active" :value="1">
+                        <label class="form-check-label" for="user-active">
+                            Active
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input v-model="user.active" class="form-check-input" type="radio" id="user-active-2" :value="0">
+                        <label class="form-check-label" for="user-active-2">
+                            Inactive
+                        </label>
+                    </div>
+
                     <hr>
                     <div class="float-start">
                         <input type="submit" class="btn btn-primary me-2" value="Save">
@@ -60,6 +73,8 @@
                     <div class="clearfix"></div>
 
                 </form-tag>
+
+                <p v-else>Loading...</p>
             </div>
         </div>
     </div>
@@ -86,10 +101,13 @@ export default {
                     this.$emit('error', data.message);
                 } else {
                     this.user = data;
+                    this.ready = true;
                     // we want password to be empty for existing users
                     this.user.password = "";
                 }
             })
+        } else {
+            this.ready = true;
         }
     },
     data() {
@@ -100,8 +118,10 @@ export default {
                 last_name: "",
                 email: "",
                 password: "",
+                active: 0,
             },
             store,
+            ready: false,
         }
     },
     components: {
@@ -116,6 +136,7 @@ export default {
                 last_name: this.user.last_name,
                 email: this.user.email,
                 password: this.user.password,
+                active: this.user.active,
             }
 
             fetch(`${process.env.VUE_APP_API_URL}/admin/users/save`, Security.requestOptions(payload))
@@ -137,8 +158,6 @@ export default {
                 text: "Are you sure you want to delete this user?",
                 submitText: "Delete",
                 submitCallback: function() {
-                    console.log("will delete", id)
-
                     let payload = {
                         id: id,
                     }
